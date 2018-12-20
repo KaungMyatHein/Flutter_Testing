@@ -77,17 +77,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text('Login'),
                   color: Theme.of(context).accentColor,
                   elevation: 4.0,
-                  splashColor: Colors.green,
+                  splashColor: Colors.orange,
                   onPressed: () {
                    if(usernameController.text == "batman" && passwordController.text == "gothmn")
                    {
-                     return showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          content: Text("Success"),
-                        );
-                      },
+                     Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SecondScreen()),
                     );
                    }
                    else return showDialog(
@@ -109,3 +105,22 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+class SecondScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Screen"),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
+}
+
