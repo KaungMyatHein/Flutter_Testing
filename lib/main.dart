@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
 void main() => runApp(MyApp());
 
@@ -41,6 +42,19 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[ 
+        new IconButton( icon: new Icon(Icons.settings,color: Colors.white), tooltip: 'Search', onPressed: () {
+          return showDialog(
+                     context: context,
+                     builder: (context)
+                     {
+                       return AlertDialog(
+                         content: Text("စက်တင်"),
+                       );
+                     }
+                   );
+        },),
+        ], 
       ),
       body: Center(
         child: Column(
@@ -91,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                      builder: (context)
                      {
                        return AlertDialog(
-                         content: Text("Fail"),
+                         content: Text("၀င်ရောက်ခြင်း အဆင်မပြေပါ။ \nကြိုးစား ကြည့်ပါဦး။"),
                        );
                      }
                    );
@@ -113,14 +127,44 @@ class SecondScreen extends StatelessWidget {
         title: Text("Second Screen"),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text('Go back!'),
-        ),
+        child: new RandomWords()
       ),
     );
   }
+}
+class RandomWordsState extends State<RandomWords> {
+  final List<WordPair> _suggestions = <WordPair>[];
+  final TextStyle _biggerFont = const TextStyle(fontSize: 18.0); 
+  @override                               
+  Widget build(BuildContext context) {
+    return _buildSuggestions();
+  } 
+  Widget _buildSuggestions() {
+    return new ListView.builder(
+      padding: const EdgeInsets.all(16.0),
+      itemBuilder: (BuildContext _context, int i) {
+        if (i.isOdd) {
+          return new Divider();
+        }
+        final int index = i ~/ 2;
+        if (index >= _suggestions.length) {
+          _suggestions.addAll(generateWordPairs().take(10));
+        }
+        return _buildRow(_suggestions[index]);
+      }
+    );
+  }
+  Widget _buildRow(WordPair pair) {
+    return new ListTile(
+      title: new Text(
+        pair.asPascalCase,
+        style: _biggerFont,
+      ),
+    );
+  }        
+}
+class RandomWords extends StatefulWidget {
+  @override
+  RandomWordsState createState() => new RandomWordsState();
 }
 
