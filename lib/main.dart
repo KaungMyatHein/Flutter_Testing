@@ -77,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: const Text('Login'),
                   color: Theme.of(context).accentColor,
                   elevation: 4.0,
-                  splashColor: Colors.blueGrey,
+                  splashColor: Colors.green,
                   onPressed: () {
                    if(usernameController.text == "batman" && passwordController.text == "gothmn")
                    {
