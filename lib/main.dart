@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() => runApp(MyApp());
 
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },),
         ], 
       ),
-      body: Center(
+      body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -123,45 +123,98 @@ class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Second Screen"),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            UserAccountsDrawerHeader(
+              accountName: Text("PTH Lab"),
+              currentAccountPicture: new Icon(Icons.supervised_user_circle,color: Colors.white), accountEmail: null,
+            ),
+            ListTile(
+              title: Text('Home'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: Text('Videos'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
       ),
-      body: Center(
+      appBar: AppBar(
+        title: Text("Welcome from PTH LAB"),
+        actions: <Widget>[ 
+        new IconButton( icon: new Icon(Icons.settings,color: Colors.white), tooltip: 'Search', onPressed: () {
+          return showDialog(
+                     context: context,
+                     builder: (context)
+                     {
+                       return AlertDialog(
+                         content: Text("စက်တင်"),
+                       );
+                     }
+                   );
+        },),
+        ], 
+      ),
+      body: Container(
         child: new RandomWords()
       ),
     );
   }
 }
 class RandomWordsState extends State<RandomWords> {
-  final List<WordPair> _suggestions = <WordPair>[];
-  final TextStyle _biggerFont = const TextStyle(fontSize: 18.0); 
   @override                               
   Widget build(BuildContext context) {
     return _buildSuggestions();
   } 
   Widget _buildSuggestions() {
-    return new ListView.builder(
-      padding: const EdgeInsets.all(16.0),
-      itemBuilder: (BuildContext _context, int i) {
-        if (i.isOdd) {
-          return new Divider();
-        }
-        final int index = i ~/ 2;
-        if (index >= _suggestions.length) {
-          _suggestions.addAll(generateWordPairs().take(10));
-        }
-        return _buildRow(_suggestions[index]);
-      }
-    );
+    /*return new Row(
+      children: <Widget>[
+        
+      ],
+  );*/
+  return Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: new CarouselSlider(
+                items: [1,2,3,4,5].map((i) {
+                  return new Builder(
+                    builder: (BuildContext context) {
+                    return new Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: new EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: new BoxDecoration(
+                        color: Colors.teal
+                      ),
+                      child: new Center(
+                        child: Text('text $i', style: new TextStyle(fontSize: 16.0,color: Colors.white),),
+                      )
+                    );
+                  },
+                );
+              }).toList(),
+              height: 400.0,
+              autoPlay: true
+              )
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: new Text('text')
+            ),
+          ],
+        ),
+      );
   }
-  Widget _buildRow(WordPair pair) {
-    return new ListTile(
-      title: new Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-    );
-  }        
+    
 }
 class RandomWords extends StatefulWidget {
   @override
